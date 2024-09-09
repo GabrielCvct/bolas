@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<!--
+Programa: DIGITE AQUI O NOME DO PROGRAMA
+Nome: Davi - Nº: 04 - Turma: 2L
+Nome: Eduarda- Nº: 07.
+Nome: Gabriel de Oliveira Cavalcanti - Nº:11.
+.-->
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimento dos Círculos</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+
+        const circleRadius = 30;
+        const circleSpeed = 2;
+
+        let circle1 = {
+            x: circleRadius,
+            y: circleRadius,
+            dx: circleSpeed,
+            dy: circleSpeed
+        };
+
+        let circle2 = {
+            x: canvasWidth - circleRadius,
+            y: canvasHeight - circleRadius,
+            dx: -circleSpeed,
+            dy: -circleSpeed
+        };
+
+        function drawCircle(x, y, color) {
+            ctx.beginPath();
+            ctx.arc(x, y, circleRadius, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+            // Atualiza as posições dos círculos
+            circle1.x += circle1.dx;
+            circle1.y += circle1.dy;
+
+            circle2.x += circle2.dx;
+            circle2.y += circle2.dy;
+
+            // Verifica se o círculo1 atingiu o centro
+            if (circle1.x >= canvasWidth / 2 - circleRadius && circle1.x <= canvasWidth / 2 + circleRadius) {
+                circle1.dx = -circleSpeed;  // Muda a direção quando chega perto do centro
+            }
+            if (circle1.y >= canvasHeight / 2 - circleRadius && circle1.y <= canvasHeight / 2 + circleRadius) {
+                circle1.dy = -circleSpeed;  // Muda a direção quando chega perto do centro
+            }
+
+            // Verifica se o círculo2 atingiu o centro
+            if (circle2.x >= canvasWidth / 2 - circleRadius && circle2.x <= canvasWidth / 2 + circleRadius) {
+                circle2.dx = circleSpeed;  // Muda a direção quando chega perto do centro
+            }
+            if (circle2.y >= canvasHeight / 2 - circleRadius && circle2.y <= canvasHeight / 2 + circleRadius) {
+                circle2.dy = circleSpeed;  // Muda a direção quando chega perto do centro
+            }
+
+            // Verifica se o círculo1 saiu do canvas
+            if (circle1.x - circleRadius > canvasWidth || circle1.x + circleRadius < 0 ||
+                circle1.y - circleRadius > canvasHeight || circle1.y + circleRadius < 0) {
+                circle1.x = circleRadius;
+                circle1.y = circleRadius;
+                circle1.dx = circleSpeed;
+                circle1.dy = circleSpeed;
+            }
+
+            // Verifica se o círculo2 saiu do canvas
+            if (circle2.x - circleRadius > canvasWidth || circle2.x + circleRadius < 0 ||
+                circle2.y - circleRadius > canvasHeight || circle2.y + circleRadius < 0) {
+                circle2.x = canvasWidth - circleRadius;
+                circle2.y = canvasHeight - circleRadius;
+                circle2.dx = -circleSpeed;
+                circle2.dy = -circleSpeed;
+            }
+
+            drawCircle(circle1.x, circle1.y, 'yellow');
+            drawCircle(circle2.x, circle2.y, 'blue');
+
+            requestAnimationFrame(update);
+        }
+
+        update();
+    </script>
+</body>
+</html>
